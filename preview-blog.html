@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Journey with React Hooks - Blog</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Playfair+Display:wght@600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #fafafa;
+            --text-primary: #0a0a0a;
+            --text-body: #242424;
+            --text-muted: #6b6b6b;
+            --accent: #1a8917;
+            --accent-hover: #156d13;
+            --border: #e6e6e6;
+            --code-bg: #f4f4f4;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-body);
+            line-height: 1.6;
+        }
+
+        /* Header - Minimal */
+        .header {
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9375rem;
+            transition: color 0.2s;
+        }
+
+        .nav a:hover {
+            color: var(--text-primary);
+        }
+
+        .cta-btn {
+            background: var(--text-primary);
+            color: white;
+            padding: 0.5rem 1.25rem;
+            border-radius: 24px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .cta-btn:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* Progress bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: transparent;
+            z-index: 1000;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            width: 25%;
+            transition: width 0.1s;
+        }
+
+        /* Hero / Cover */
+        .article-hero {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem 0;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        .author-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+
+        .author-info {
+            flex: 1;
+        }
+
+        .author-name {
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 0.9375rem;
+        }
+
+        .post-date {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        .article-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.15;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .article-subtitle {
+            font-family: 'Lora', Georgia, serif;
+            font-size: 1.375rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 2rem;
+        }
+
+        .article-cover {
+            width: 100%;
+            max-width: 1200px;
+            margin: 2rem auto;
+            border-radius: 0;
+            overflow: hidden;
+        }
+
+        .article-cover img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Content - Single column centered */
+        .article-content {
+            max-width: 680px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        /* Typography */
+        .article-content p {
+            font-family: 'Lora', Georgia, serif;
+            font-size: 1.25rem;
+            line-height: 1.75;
+            color: var(--text-body);
+            margin-bottom: 1.75rem;
+            letter-spacing: -0.003em;
+        }
+
+        .article-content p:first-of-type::first-letter {
+            font-size: 3.5rem;
+            font-weight: 600;
+            float: left;
+            line-height: 0.9;
+            margin: 0.1em 0.1em 0 0;
+            font-family: 'Playfair Display', Georgia, serif;
+            color: var(--text-primary);
+        }
+
+        .article-content h2 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-top: 3rem;
+            margin-bottom: 1.25rem;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+        }
+
+        .article-content h3 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .article-content blockquote {
+            font-family: 'Lora', Georgia, serif;
+            font-size: 1.375rem;
+            font-style: italic;
+            line-height: 1.6;
+            color: var(--text-primary);
+            border-left: 4px solid var(--text-primary);
+            padding-left: 2rem;
+            margin: 2.5rem 0;
+        }
+
+        .article-content ul, .article-content ol {
+            font-family: 'Lora', Georgia, serif;
+            font-size: 1.25rem;
+            line-height: 1.75;
+            margin: 1.75rem 0;
+            padding-left: 2rem;
+        }
+
+        .article-content li {
+            margin: 0.75rem 0;
+        }
+
+        .article-content a {
+            color: var(--text-primary);
+            text-decoration: underline;
+            text-decoration-color: var(--accent);
+            text-decoration-thickness: 2px;
+            text-underline-offset: 2px;
+            transition: all 0.2s;
+        }
+
+        .article-content a:hover {
+            color: var(--accent);
+        }
+
+        .article-content code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9em;
+            background: var(--code-bg);
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            color: #c7254e;
+        }
+
+        .article-content pre {
+            background: var(--code-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 2rem 0;
+        }
+
+        .article-content pre code {
+            background: transparent;
+            padding: 0;
+            color: var(--text-body);
+            font-size: 0.9375rem;
+        }
+
+        .article-content img {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+            margin: 2.5rem 0;
+        }
+
+        .article-content figcaption {
+            text-align: center;
+            font-size: 0.9375rem;
+            color: var(--text-muted);
+            margin-top: 0.75rem;
+            font-style: italic;
+        }
+
+        /* Pull quote */
+        .pullquote {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.75rem;
+            font-weight: 500;
+            text-align: center;
+            color: var(--text-primary);
+            margin: 3rem 0;
+            padding: 2rem 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            line-height: 1.4;
+        }
+
+        /* Tags */
+        .article-tags {
+            max-width: 680px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: var(--bg-secondary);
+            color: var(--text-muted);
+            padding: 0.5rem 1rem;
+            border-radius: 24px;
+            font-size: 0.875rem;
+            text-decoration: none;
+            transition: all 0.2s;
+            border: 1px solid var(--border);
+        }
+
+        .tag:hover {
+            background: var(--text-primary);
+            color: white;
+            border-color: var(--text-primary);
+        }
+
+        /* Share buttons */
+        .article-share {
+            max-width: 680px;
+            margin: 3rem auto;
+            padding: 2rem;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .share-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .share-btn {
+            flex: 1;
+            padding: 0.75rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-body);
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .share-btn:hover {
+            background: var(--text-primary);
+            color: white;
+            border-color: var(--text-primary);
+        }
+
+        /* Author bio */
+        .author-bio {
+            max-width: 680px;
+            margin: 3rem auto;
+            padding: 2rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .author-bio-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        .author-bio-content {
+            flex: 1;
+        }
+
+        .author-bio-name {
+            font-weight: 600;
+            font-size: 1.125rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .author-bio-description {
+            color: var(--text-muted);
+            font-size: 0.9375rem;
+            line-height: 1.6;
+        }
+
+        /* Related posts */
+        .related-posts {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .related-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .related-card {
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.2s;
+        }
+
+        .related-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .related-card-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .related-card-title {
+            font-weight: 600;
+            font-size: 1.125rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .related-card-excerpt {
+            color: var(--text-muted);
+            font-size: 0.9375rem;
+            line-height: 1.5;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+            .article-title {
+                font-size: 2rem;
+            }
+
+            .article-subtitle {
+                font-size: 1.125rem;
+            }
+
+            .article-content p {
+                font-size: 1.125rem;
+            }
+
+            .author-bio {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .share-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Progress bar -->
+    <div class="progress-bar">
+        <div class="progress-fill"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">YourBrand</div>
+            <nav class="nav">
+                <a href="#">Home</a>
+                <a href="#">Archive</a>
+                <a href="#">About</a>
+                <a href="#" class="cta-btn">Subscribe</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Article Hero -->
+    <article>
+        <div class="article-hero">
+            <div class="article-meta">
+                <div class="author-avatar">JD</div>
+                <div class="author-info">
+                    <div class="author-name">John Doe</div>
+                    <div class="post-date">January 15, 2025 · 8 min read</div>
+                </div>
+            </div>
+
+            <h1 class="article-title">My Journey with React Hooks: From Confusion to Clarity</h1>
+            <p class="article-subtitle">
+                How I learned to stop worrying about class components and embrace the functional future of React.
+            </p>
+        </div>
+
+        <div class="article-cover">
+            <svg width="1200" height="500" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <rect width="1200" height="500" fill="url(#grad1)"/>
+                <text x="50%" y="50%" text-anchor="middle" fill="white" font-size="48" font-family="Playfair Display, serif" font-weight="700">React Hooks Journey</text>
+            </svg>
+        </div>
+
+        <!-- Article Content -->
+        <div class="article-content">
+            <p>
+                When React Hooks were first announced at React Conf 2018, I was skeptical. After years of writing
+                class components with lifecycle methods I knew by heart, the idea of managing state and side effects
+                with simple functions seemed almost too good to be true. But as I dove deeper into this new paradigm,
+                I discovered a more elegant way to write React applications.
+            </p>
+
+            <p>
+                The learning curve wasn't exactly smooth. I made every mistake in the book: forgetting dependency
+                arrays, creating infinite loops, and wrestling with stale closures. But each mistake taught me
+                something valuable about how React works under the hood.
+            </p>
+
+            <h2>The Breakthrough Moment</h2>
+
+            <p>
+                My understanding of hooks crystallized when I stopped trying to map them directly to class component
+                lifecycle methods. Hooks aren't just a different syntax for the same concepts—they represent a
+                fundamentally different mental model for building components.
+            </p>
+
+            <blockquote>
+                "With Hooks, you don't think in terms of mounting and updating. You think in terms of
+                synchronizing with external systems."
+            </blockquote>
+
+            <p>
+                This shift in perspective changed everything. Instead of asking "which lifecycle method do I use?",
+                I started asking "what does this component need to synchronize with?" The answer to that question
+                naturally leads you to the right hook.
+            </p>
+
+            <h3>useState: More Than Just State</h3>
+
+            <p>
+                Let's start with the most fundamental hook. At first glance, <code>useState</code> seems simple:
+                it gives you a value and a way to update it. But the real power comes from understanding that
+                each call to <code>useState</code> is independent and can manage its own piece of state:
+            </p>
+
+            <pre><code>const [count, setCount] = useState(0);
+const [name, setName] = useState('');
+const [isVisible, setIsVisible] = useState(true);
+
+// Each piece of state is independent
+// Updates are batched for performance
+// Re-renders happen efficiently</code></pre>
+
+            <p>
+                Unlike class components where all state lives in a single object, hooks let you split state into
+                logical pieces. This makes your code more modular and easier to refactor.
+            </p>
+
+            <div class="pullquote">
+                The best code is not the cleverest code—it's the code that's easiest to understand six months from now.
+            </div>
+
+            <h2>useEffect: The Swiss Army Knife</h2>
+
+            <p>
+                If <code>useState</code> is the heart of hooks, <code>useEffect</code> is the nervous system.
+                It handles all the side effects your component needs: data fetching, subscriptions, manual DOM
+                manipulation, and more.
+            </p>
+
+            <p>
+                The key insight is that <code>useEffect</code> runs after every render by default, but you can
+                control when it runs with the dependency array. This is where many developers (including past me)
+                get tripped up.
+            </p>
+
+            <h3>Three Rules That Changed My Understanding</h3>
+
+            <p>After countless hours of debugging, I distilled my learnings into three rules:</p>
+
+            <ul>
+                <li><strong>Always declare dependencies honestly</strong> – Don't lie to React about what your effect needs</li>
+                <li><strong>Think in synchronization</strong> – Your effect should sync with external state, not cause it</li>
+                <li><strong>Cleanup is crucial</strong> – Always cleanup subscriptions, timers, and event listeners</li>
+            </ul>
+
+            <p>
+                These rules might seem obvious now, but they represent hundreds of hours of debugging and reading
+                documentation. If you internalize them early, you'll save yourself countless headaches.
+            </p>
+
+            <h2>Custom Hooks: Where It All Clicks</h2>
+
+            <p>
+                The moment hooks truly clicked for me was when I wrote my first custom hook. Suddenly, I could
+                extract complex logic into reusable functions that felt natural to use. No more render props,
+                no more HOCs—just composition through simple functions.
+            </p>
+
+            <pre><code>function useWindowSize() {
+  const [size, setSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setSize({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return size;
+}</code></pre>
+
+            <p>
+                This pattern of encapsulating logic in custom hooks has made my code dramatically more reusable
+                and testable. Each hook does one thing well, and they compose beautifully.
+            </p>
+
+            <h2>Lessons Learned</h2>
+
+            <p>
+                Looking back on this journey, I realize that learning hooks wasn't just about learning a new API.
+                It was about learning to think differently about how components work. Here are the key lessons
+                that stuck with me:
+            </p>
+
+            <ul>
+                <li>Embrace the functional paradigm—don't fight it</li>
+                <li>Read the official docs thoroughly (they're excellent)</li>
+                <li>Use the ESLint plugin for hooks—it catches so many mistakes</li>
+                <li>Start with simple hooks and gradually build complexity</li>
+                <li>Don't be afraid to write custom hooks</li>
+            </ul>
+
+            <p>
+                Today, I can't imagine going back to class components. Hooks have made my code more readable,
+                more reusable, and frankly, more fun to write. The initial confusion was worth pushing through.
+            </p>
+
+            <p>
+                If you're just starting your hooks journey, be patient with yourself. Every expert was once a
+                beginner who refused to give up. The confusion you feel now will transform into clarity with
+                practice and persistence.
+            </p>
+        </div>
+
+        <!-- Tags -->
+        <div class="article-tags">
+            <a href="#" class="tag">React</a>
+            <a href="#" class="tag">JavaScript</a>
+            <a href="#" class="tag">Hooks</a>
+            <a href="#" class="tag">Frontend Development</a>
+        </div>
+
+        <!-- Share -->
+        <div class="article-share">
+            <div class="share-title">Share this article</div>
+            <div class="share-buttons">
+                <a href="#" class="share-btn">
+                    <span>🐦</span> Twitter
+                </a>
+                <a href="#" class="share-btn">
+                    <span>💼</span> LinkedIn
+                </a>
+                <a href="#" class="share-btn">
+                    <span>📘</span> Facebook
+                </a>
+                <a href="#" class="share-btn">
+                    <span>🔗</span> Copy Link
+                </a>
+            </div>
+        </div>
+
+        <!-- Author Bio -->
+        <div class="author-bio">
+            <div class="author-bio-avatar">JD</div>
+            <div class="author-bio-content">
+                <div class="author-bio-name">John Doe</div>
+                <div class="author-bio-description">
+                    Full-stack developer passionate about React, TypeScript, and building great user experiences.
+                    I write about web development, share lessons learned, and occasionally complain about CSS.
+                    Follow me for more articles on modern JavaScript and frontend architecture.
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <!-- Related Posts -->
+    <section class="related-posts">
+        <h2 class="related-title">Related Articles</h2>
+        <div class="related-grid">
+            <a href="#" class="related-card">
+                <div class="related-card-image"></div>
+                <h3 class="related-card-title">Understanding useEffect Dependencies</h3>
+                <p class="related-card-excerpt">
+                    A deep dive into dependency arrays and how to avoid common pitfalls when using useEffect.
+                </p>
+            </a>
+            <a href="#" class="related-card">
+                <div class="related-card-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"></div>
+                <h3 class="related-card-title">Building Custom Hooks Like a Pro</h3>
+                <p class="related-card-excerpt">
+                    Learn patterns and best practices for creating reusable custom hooks in your React applications.
+                </p>
+            </a>
+            <a href="#" class="related-card">
+                <div class="related-card-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);"></div>
+                <h3 class="related-card-title">From Class to Hooks: A Migration Guide</h3>
+                <p class="related-card-excerpt">
+                    Step-by-step guide to refactoring your class components to functional components with hooks.
+                </p>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>© 2025 YourBrand. All rights reserved.</p>
+            <p style="margin-top: 0.5rem;">
+                <a href="#" style="color: var(--text-muted); text-decoration: none;">Privacy</a> ·
+                <a href="#" style="color: var(--text-muted); text-decoration: none;">Terms</a> ·
+                <a href="#" style="color: var(--text-muted); text-decoration: none;">RSS</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll progress
+        window.addEventListener('scroll', () => {
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight - windowHeight;
+            const scrolled = window.scrollY;
+            const progress = (scrolled / documentHeight) * 100;
+
+            document.querySelector('.progress-fill').style.width = progress + '%';
+        });
+    </script>
+</body>
+</html>
