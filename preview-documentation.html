@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation Preview - Introduction to Python</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Playfair+Display:wght@600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Light mode colors */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --bg-elevated: #ffffff;
+            --text-primary: #1a1a1a;
+            --text-body: #2d2d2d;
+            --text-muted: #6b7280;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --border: #e5e7eb;
+            --code-bg: #f8f8f8;
+            --code-border: #e5e7eb;
+
+            /* Callout colors */
+            --info-bg: #eff6ff;
+            --info-border: #3b82f6;
+            --warning-bg: #fef3c7;
+            --warning-border: #f59e0b;
+            --success-bg: #d1fae5;
+            --success-border: #10b981;
+            --danger-bg: #fee2e2;
+            --danger-border: #ef4444;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-body);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: var(--bg-elevated);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .header-content {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav a:hover {
+            color: var(--text-primary);
+        }
+
+        /* Main layout */
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 280px 1fr 240px;
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: sticky;
+            top: 5rem;
+            height: fit-content;
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .sidebar-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .nav-item {
+            padding: 0.5rem 0.75rem;
+            margin: 0.25rem 0;
+            color: var(--text-body);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-radius: 6px;
+            transition: background 0.2s;
+            font-size: 0.9375rem;
+        }
+
+        .nav-item:hover {
+            background: var(--bg-secondary);
+        }
+
+        .nav-item.active {
+            background: #eff6ff;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .nav-item.active::before {
+            content: '●';
+            color: var(--accent);
+            font-size: 0.5rem;
+        }
+
+        /* Main content */
+        .main-content {
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            padding: 3rem;
+            border: 1px solid var(--border);
+            min-height: 100vh;
+        }
+
+        .breadcrumb {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-bottom: 2rem;
+        }
+
+        .breadcrumb a {
+            color: var(--text-muted);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--accent);
+        }
+
+        /* Typography */
+        .content {
+            max-width: 750px;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .meta {
+            color: var(--text-muted);
+            font-size: 0.9375rem;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        h2 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-top: 3rem;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        h3 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.375rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        p {
+            font-family: 'Lora', Georgia, serif;
+            font-size: 1.125rem;
+            line-height: 1.7;
+            color: var(--text-body);
+            margin-bottom: 1.5rem;
+            max-width: 65ch;
+        }
+
+        ul, ol {
+            font-family: 'Lora', Georgia, serif;
+            font-size: 1.125rem;
+            line-height: 1.8;
+            margin: 1.5rem 0;
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin: 0.5rem 0;
+        }
+
+        /* Callout boxes */
+        .callout {
+            padding: 1.25rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            border-left: 4px solid;
+        }
+
+        .callout-title {
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .callout-content {
+            font-family: 'Lora', Georgia, serif;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .callout.info {
+            background: var(--info-bg);
+            border-color: var(--info-border);
+        }
+
+        .callout.warning {
+            background: var(--warning-bg);
+            border-color: var(--warning-border);
+        }
+
+        .callout.success {
+            background: var(--success-bg);
+            border-color: var(--success-border);
+        }
+
+        /* Code blocks */
+        .code-block {
+            position: relative;
+            margin: 2rem 0;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1.25rem;
+            background: #e5e7eb;
+            border-radius: 8px 8px 0 0;
+            border: 1px solid var(--code-border);
+            border-bottom: none;
+        }
+
+        .code-lang {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .copy-btn {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            padding: 0.375rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        pre {
+            margin: 0;
+            padding: 1.5rem;
+            background: var(--code-bg);
+            border: 1px solid var(--code-border);
+            border-radius: 0 0 8px 8px;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9375rem;
+            line-height: 1.7;
+        }
+
+        /* Line numbers */
+        .line-numbers {
+            counter-reset: line;
+        }
+
+        .line-numbers .line {
+            counter-increment: line;
+            position: relative;
+            padding-left: 3.5rem;
+        }
+
+        .line-numbers .line::before {
+            content: counter(line);
+            position: absolute;
+            left: 0;
+            width: 2.5rem;
+            text-align: right;
+            color: #9ca3af;
+            user-select: none;
+        }
+
+        /* Syntax highlighting */
+        .keyword { color: #d73a49; }
+        .string { color: #032f62; }
+        .function { color: #6f42c1; }
+        .comment { color: #6a737d; font-style: italic; }
+        .number { color: #005cc5; }
+
+        /* TOC */
+        .toc {
+            position: sticky;
+            top: 5rem;
+            height: fit-content;
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .toc-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .toc-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .toc-item {
+            margin: 0.5rem 0;
+        }
+
+        .toc-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.2s;
+            display: block;
+        }
+
+        .toc-link:hover {
+            color: var(--text-primary);
+        }
+
+        .toc-link.active {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .toc-link.active::before {
+            content: '→ ';
+        }
+
+        .toc-item.nested {
+            padding-left: 0.75rem;
+            font-size: 0.8125rem;
+        }
+
+        .toc-item.nested::before {
+            content: '• ';
+            color: var(--text-muted);
+        }
+
+        /* Progress bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--border);
+            z-index: 1000;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            width: 35%;
+            transition: width 0.1s;
+        }
+
+        /* Navigation */
+        .doc-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            gap: 1rem;
+        }
+
+        .doc-nav-btn {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-body);
+            transition: all 0.2s;
+        }
+
+        .doc-nav-btn:hover {
+            border-color: var(--accent);
+            background: var(--bg-elevated);
+        }
+
+        .doc-nav-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+
+        .doc-nav-title {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar, .toc {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Progress bar -->
+    <div class="progress-bar">
+        <div class="progress-fill"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                📚 YourBrand
+            </div>
+            <nav class="nav">
+                <a href="#">Documentation</a>
+                <a href="#">Blog</a>
+                <a href="#">🔍 Search</a>
+                <a href="#">🌙</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main container -->
+    <div class="container">
+        <!-- Left sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-title">Getting Started</div>
+            <a href="#" class="nav-item">🏠 Home</a>
+            <a href="#" class="nav-item">📖 Courses</a>
+
+            <div class="sidebar-title" style="margin-top: 2rem;">Python</div>
+            <a href="#" class="nav-item active">Introduction</a>
+            <a href="#" class="nav-item">Basics</a>
+            <a href="#" class="nav-item">OOP</a>
+
+            <div class="sidebar-title" style="margin-top: 2rem;">JavaScript</div>
+            <a href="#" class="nav-item">ES6 Features</a>
+            <a href="#" class="nav-item">Async/Await</a>
+
+            <div class="sidebar-title" style="margin-top: 2rem;">React</div>
+            <a href="#" class="nav-item">Hooks</a>
+            <a href="#" class="nav-item">Context API</a>
+        </aside>
+
+        <!-- Main content -->
+        <main class="main-content">
+            <div class="breadcrumb">
+                <a href="#">Home</a> › <a href="#">Python</a> › Introduction
+            </div>
+
+            <div class="content">
+                <h1>Introduction to Python</h1>
+                <div class="meta">8 min read • Updated January 15, 2025</div>
+
+                <p>
+                    Python is a high-level, interpreted programming language known for its elegant syntax and readability.
+                    Created by Guido van Rossum and first released in 1991, it has become one of the most popular
+                    programming languages in the world, powering everything from web applications to data science and machine learning.
+                </p>
+
+                <p>
+                    The language's design philosophy emphasizes code readability with the use of significant indentation.
+                    Its language constructs and object-oriented approach aim to help programmers write clear, logical code
+                    for small and large-scale projects.
+                </p>
+
+                <div class="callout info">
+                    <div class="callout-title">💡 TIP</div>
+                    <div class="callout-content">
+                        Python's philosophy is beautifully captured in "The Zen of Python". Try running
+                        <code>import this</code> in your Python interpreter to see the full list of guiding principles!
+                    </div>
+                </div>
+
+                <h2>Why Python?</h2>
+
+                <p>
+                    Python emphasizes code readability and allows developers to express concepts in fewer lines of code
+                    than would be possible in languages such as C++ or Java. The language provides constructs intended to
+                    enable writing clear programs on both small and large scales.
+                </p>
+
+                <p>Key features that make Python stand out:</p>
+
+                <ul>
+                    <li><strong>Dynamic typing</strong> – No need to declare variable types explicitly</li>
+                    <li><strong>Automatic memory management</strong> – Built-in garbage collector handles memory allocation</li>
+                    <li><strong>Rich standard library</strong> – "Batteries included" philosophy means less external dependencies</li>
+                    <li><strong>Cross-platform</strong> – Runs on Windows, macOS, Linux, and more</li>
+                    <li><strong>Multiple paradigms</strong> – Supports procedural, object-oriented, and functional programming</li>
+                </ul>
+
+                <h2>Installing Python</h2>
+
+                <p>
+                    Getting started with Python is straightforward. You can download the official distribution from
+                    <a href="https://python.org" style="color: var(--accent);">python.org</a>, or use a package manager
+                    for your operating system:
+                </p>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">bash</span>
+                        <button class="copy-btn">📋 Copy</button>
+                    </div>
+                    <pre><code><span class="comment"># macOS (using Homebrew)</span>
+brew install python3
+
+<span class="comment"># Ubuntu/Debian</span>
+sudo apt install python3
+
+<span class="comment"># Windows (using Chocolatey)</span>
+choco install python</code></pre>
+                </div>
+
+                <p>
+                    After installation, verify it's working by checking the version:
+                </p>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">bash</span>
+                        <button class="copy-btn">📋 Copy</button>
+                    </div>
+                    <pre><code>python3 --version</code></pre>
+                </div>
+
+                <h3>Your First Python Program</h3>
+
+                <p>
+                    Let's write the traditional "Hello, World!" program in Python. Create a file named
+                    <code>hello.py</code> and add the following code:
+                </p>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">python</span>
+                        <button class="copy-btn">📋 Copy</button>
+                    </div>
+                    <pre class="line-numbers"><code><div class="line"><span class="keyword">def</span> <span class="function">greet</span>(name):</div><div class="line">    <span class="string">"""Greet someone by name."""</span></div><div class="line">    <span class="keyword">return</span> <span class="string">f"Hello, {name}!"</span></div><div class="line"></div><div class="line"><span class="comment"># Call the function</span></div><div class="line">message = greet(<span class="string">"World"</span>)</div><div class="line"><span class="function">print</span>(message)  <span class="comment"># Output: Hello, World!</span></div></code></pre>
+                </div>
+
+                <p>
+                    Run your program from the terminal:
+                </p>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">bash</span>
+                        <button class="copy-btn">📋 Copy</button>
+                    </div>
+                    <pre><code>python3 hello.py</code></pre>
+                </div>
+
+                <div class="callout success">
+                    <div class="callout-title">✅ BEST PRACTICE</div>
+                    <div class="callout-content">
+                        Always use virtual environments for your Python projects to avoid dependency conflicts.
+                        Use <code>python3 -m venv venv</code> to create one, then activate it with
+                        <code>source venv/bin/activate</code> (Unix) or <code>venv\Scripts\activate</code> (Windows).
+                    </div>
+                </div>
+
+                <h2>What's Next?</h2>
+
+                <p>
+                    Now that you have Python installed and understand the basics, you're ready to dive deeper.
+                    In the next section, we'll explore Python's fundamental data types, variables, and operators.
+                </p>
+
+                <p>
+                    We'll also cover control flow statements like if/else, loops, and functions in detail.
+                    By the end of the basics section, you'll be comfortable writing simple Python programs to solve
+                    real-world problems.
+                </p>
+
+                <!-- Navigation -->
+                <div class="doc-nav">
+                    <a href="#" class="doc-nav-btn">
+                        <div class="doc-nav-label">← Previous</div>
+                        <div class="doc-nav-title">Getting Started</div>
+                    </a>
+                    <a href="#" class="doc-nav-btn" style="text-align: right;">
+                        <div class="doc-nav-label">Next →</div>
+                        <div class="doc-nav-title">Python Basics</div>
+                    </a>
+                </div>
+            </div>
+        </main>
+
+        <!-- Right TOC -->
+        <aside class="toc">
+            <div class="toc-title">On This Page</div>
+            <ul class="toc-list">
+                <li class="toc-item"><a href="#" class="toc-link active">Overview</a></li>
+                <li class="toc-item"><a href="#" class="toc-link">Why Python?</a></li>
+                <li class="toc-item nested"><a href="#" class="toc-link">Key Features</a></li>
+                <li class="toc-item"><a href="#" class="toc-link">Installing Python</a></li>
+                <li class="toc-item nested"><a href="#" class="toc-link">First Program</a></li>
+                <li class="toc-item"><a href="#" class="toc-link">What's Next?</a></li>
+            </ul>
+        </aside>
+    </div>
+
+    <script>
+        // Copy button functionality
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const codeBlock = btn.closest('.code-block').querySelector('code');
+                const text = codeBlock.innerText;
+                navigator.clipboard.writeText(text);
+
+                btn.textContent = '✅ Copied!';
+                setTimeout(() => {
+                    btn.textContent = '📋 Copy';
+                }, 2000);
+            });
+        });
+
+        // Simulate scroll progress
+        window.addEventListener('scroll', () => {
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight - windowHeight;
+            const scrolled = window.scrollY;
+            const progress = (scrolled / documentHeight) * 100;
+
+            document.querySelector('.progress-fill').style.width = progress + '%';
+        });
+    </script>
+</body>
+</html>
