@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Journey with React Hooks - Blog</title>
+
+    <!-- Variable Font: Inter (optimized for screens) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..900&family=Lora:ital,wght@0,400..700;1,400..700&family=Crimson+Pro:wght@400..900&family=JetBrains+Mono:wght@400..700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================
+           FLUID TYPE SCALE (2025 Best Practice)
+        ============================================ */
+        :root {
+            /* Fluid type scale */
+            --step--2: clamp(0.69rem, calc(0.66rem + 0.18vw), 0.80rem);
+            --step--1: clamp(0.83rem, calc(0.78rem + 0.29vw), 1.00rem);
+            --step-0: clamp(1.00rem, calc(0.91rem + 0.43vw), 1.25rem);
+            --step-1: clamp(1.20rem, calc(1.07rem + 0.63vw), 1.56rem);
+            --step-2: clamp(1.44rem, calc(1.26rem + 0.89vw), 1.95rem);
+            --step-3: clamp(1.73rem, calc(1.48rem + 1.24vw), 2.44rem);
+            --step-4: clamp(2.07rem, calc(1.73rem + 1.70vw), 3.05rem);
+            --step-5: clamp(2.49rem, calc(2.03rem + 2.31vw), 3.82rem);
+
+            /* Spacing scale */
+            --space-3xs: clamp(0.25rem, calc(0.23rem + 0.11vw), 0.31rem);
+            --space-2xs: clamp(0.50rem, calc(0.46rem + 0.21vw), 0.63rem);
+            --space-xs: clamp(0.75rem, calc(0.68rem + 0.32vw), 0.94rem);
+            --space-s: clamp(1.00rem, calc(0.91rem + 0.43vw), 1.25rem);
+            --space-m: clamp(1.50rem, calc(1.37rem + 0.65vw), 1.88rem);
+            --space-l: clamp(2.00rem, calc(1.83rem + 0.87vw), 2.50rem);
+            --space-xl: clamp(3.00rem, calc(2.74rem + 1.30vw), 3.75rem);
+            --space-2xl: clamp(4.00rem, calc(3.65rem + 1.74vw), 5.00rem);
+
+            /* Content widths */
+            --content-article: 680px;
+            --content-wide: 1200px;
+        }
+
+        /* ============================================
+           COLOR SYSTEM - Light & Dark
+        ============================================ */
+        [data-theme="light"] {
+            --color-bg-primary: #ffffff;
+            --color-bg-secondary: #fafafa;
+            --color-bg-overlay: rgba(255, 255, 255, 0.95);
+
+            --color-text-primary: #0a0a0a;
+            --color-text-body: #1a1a1a;
+            --color-text-muted: #6b6b6b;
+            --color-text-inverse: #fafafa;
+
+            --color-accent: #1a8917;
+            --color-accent-hover: #156d13;
+
+            --color-border: #e6e6e6;
+            --color-code-bg: #f4f4f4;
+        }
+
+        [data-theme="dark"] {
+            --color-bg-primary: #0f172a;
+            --color-bg-secondary: #1e293b;
+            --color-bg-overlay: rgba(15, 23, 42, 0.95);
+
+            --color-text-primary: #f1f5f9;
+            --color-text-body: #e2e8f0;
+            --color-text-muted: #94a3b8;
+            --color-text-inverse: #0f172a;
+
+            --color-accent: #34d399;
+            --color-accent-hover: #6ee7b7;
+
+            --color-border: #334155;
+            --color-code-bg: #1e293b;
+        }
+
+        /* ============================================
+           RESET & BASE
+        ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            transition: background-color 300ms ease, color 300ms ease;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--color-bg-primary);
+            color: var(--color-text-body);
+            line-height: 1.6;
+            transition: background-color 300ms ease, color 300ms ease;
+            font-feature-settings: 'liga' 1, 'calt' 1;
+        }
+
+        /* ============================================
+           HEADER - Minimal & Clean
+        ============================================ */
+        .header {
+            background: var(--color-bg-overlay);
+            border-bottom: 1px solid var(--color-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: all 300ms ease;
+        }
+
+        .header-content {
+            max-width: var(--content-wide);
+            margin: 0 auto;
+            padding: var(--space-s) var(--space-l);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Crimson Pro', Georgia, serif;
+            font-size: var(--step-2);
+            font-weight: 700;
+            color: var(--color-text-primary);
+            letter-spacing: -0.02em;
+        }
+
+        .nav {
+            display: flex;
+            gap: var(--space-l);
+            align-items: center;
+        }
+
+        .nav a {
+            color: var(--color-text-muted);
+            text-decoration: none;
+            font-size: var(--step--1);
+            font-weight: 500;
+            transition: color 200ms ease;
+        }
+
+        .nav a:hover {
+            color: var(--color-text-primary);
+        }
+
+        .cta-btn {
+            background: var(--color-text-primary);
+            color: var(--color-text-inverse);
+            padding: var(--space-2xs) var(--space-m);
+            border-radius: 24px;
+            font-weight: 600;
+            transition: all 200ms ease;
+        }
+
+        .cta-btn:hover {
+            background: var(--color-accent);
+            transform: translateY(-1px);
+        }
+
+        .theme-toggle {
+            background: var(--color-bg-secondary);
+            border: 1px solid var(--color-border);
+            padding: var(--space-2xs) var(--space-s);
+            border-radius: 24px;
+            cursor: pointer;
+            transition: all 200ms ease;
+            font-size: var(--step-0);
+            min-width: 44px;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            background: var(--color-accent);
+            color: var(--color-text-inverse);
+            border-color: var(--color-accent);
+            transform: translateY(-1px);
+        }
+
+        /* ============================================
+           PROGRESS BAR
+        ============================================ */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: transparent;
+            z-index: 1000;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--color-accent);
+            width: 25%;
+            transition: width 100ms ease;
+        }
+
+        /* ============================================
+           ARTICLE HERO
+        ============================================ */
+        .article-hero {
+            max-width: var(--content-wide);
+            margin: 0 auto;
+            padding: var(--space-xl) var(--space-l) 0;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: var(--space-s);
+            margin-bottom: var(--space-m);
+            color: var(--color-text-muted);
+            font-size: var(--step--1);
+        }
+
+        .author-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: var(--step-1);
+        }
+
+        .author-info {
+            flex: 1;
+        }
+
+        .author-name {
+            color: var(--color-text-primary);
+            font-weight: 600;
+            font-size: var(--step--1);
+        }
+
+        .post-date {
+            color: var(--color-text-muted);
+            font-size: var(--step--1);
+        }
+
+        .article-title {
+            font-family: 'Crimson Pro', Georgia, serif;
+            font-size: var(--step-5);
+            font-weight: 700;
+            color: var(--color-text-primary);
+            line-height: 1.1;
+            margin-bottom: var(--space-m);
+            letter-spacing: -0.03em;
+        }
+
+        .article-subtitle {
+            font-family: 'Lora', Georgia, serif;
+            font-size: var(--step-1);
+            color: var(--color-text-muted);
+            line-height: 1.5;
+            margin-bottom: var(--space-l);
+        }
+
+        .article-cover {
+            width: 100%;
+            max-width: var(--content-wide);
+            margin: var(--space-l) auto;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .article-cover img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* ============================================
+           ARTICLE CONTENT
+        ============================================ */
+        .article-content {
+            max-width: var(--content-article);
+            margin: var(--space-xl) auto;
+            padding: 0 var(--space-l);
+        }
+
+        .article-content p {
+            font-family: 'Lora', Georgia, serif;
+            font-size: var(--step-0);
+            line-height: 1.75;
+            color: var(--color-text-body);
+            margin-bottom: var(--space-l);
+            letter-spacing: -0.003em;
+        }
+
+        /* Drop cap for first paragraph */
+        .article-content p:first-of-type::first-letter {
+            font-size: 3.5em;
+            font-weight: 700;
+            float: left;
+            line-height: 0.85;
+            margin: 0.1em 0.15em 0 0;
+            font-family: 'Crimson Pro', Georgia, serif;
+            color: var(--color-text-primary);
+        }
+
+        .article-content h2 {
+            font-family: 'Crimson Pro', Georgia, serif;
+            font-size: var(--step-3);
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-top: var(--space-xl);
+            margin-bottom: var(--space-m);
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+
+        .article-content h3 {
+            font-family: 'Crimson Pro', Georgia, serif;
+            font-size: var(--step-2);
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-top: var(--space-l);
+            margin-bottom: var(--space-s);
+            line-height: 1.3;
+        }
+
+        .article-content blockquote {
+            font-family: 'Lora', Georgia, serif;
+            font-size: var(--step-1);
+            font-style: italic;
+            line-height: 1.6;
+            color: var(--color-text-primary);
+            border-left: 4px solid var(--color-accent);
+            padding-left: var(--space-l);
+            margin: var(--space-xl) 0;
+        }
+
+        .article-content ul,
+        .article-content ol {
+            font-family: 'Lora', Georgia, serif;
+            font-size: var(--step-0);
+            line-height: 1.75;
+            margin: var(--space-l) 0;
+            padding-left: var(--space-l);
+        }
+
+        .article-content li {
+            margin: var(--space-s) 0;
+        }
+
+        .article-content a {
+            color: var(--color-text-primary);
+            text-decoration: underline;
+            text-decoration-color: var(--color-accent);
+            text-decoration-thickness: 2px;
+            text-underline-offset: 3px;
+            transition: all 200ms ease;
+        }
+
+        .article-content a:hover {
+            color: var(--color-accent);
+        }
+
+        .article-content code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9em;
+            background: var(--color-code-bg);
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
+            color: var(--color-accent);
+        }
+
+        .article-content pre {
+            background: var(--color-code-bg);
+            padding: var(--space-m);
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: var(--space-l) 0;
+            border: 1px solid var(--color-border);
+        }
+
+        .article-content pre code {
+            background: transparent;
+            padding: 0;
+            color: var(--color-text-body);
+            font-size: var(--step--1);
+        }
+
+        .article-content strong {
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        /* Pull quote */
+        .pullquote {
+            font-family: 'Crimson Pro', Georgia, serif;
+            font-size: var(--step-2);
+            font-weight: 500;
+            text-align: center;
+            color: var(--color-text-primary);
+            margin: var(--space-2xl) 0;
+            padding: var(--space-l) 0;
+            border-top: 1px solid var(--color-border);
+            border-bottom: 1px solid var(--color-border);
+            line-height: 1.4;
+        }
+
+        /* ============================================
+           ARTICLE TAGS
+        ============================================ */
+        .article-tags {
+            max-width: var(--content-article);
+            margin: var(--space-xl) auto;
+            padding: 0 var(--space-l);
+            display: flex;
+            gap: var(--space-s);
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: var(--color-bg-secondary);
+            color: var(--color-text-muted);
+            padding: var(--space-2xs) var(--space-s);
+            border-radius: 24px;
+            font-size: var(--step--1);
+            text-decoration: none;
+            transition: all 200ms ease;
+            border: 1px solid var(--color-border);
+        }
+
+        .tag:hover {
+            background: var(--color-accent);
+            color: var(--color-text-inverse);
+            border-color: var(--color-accent);
+            transform: translateY(-1px);
+        }
+
+        /* ============================================
+           SHARE SECTION
+        ============================================ */
+        .article-share {
+            max-width: var(--content-article);
+            margin: var(--space-xl) auto;
+            padding: var(--space-l);
+            border-top: 1px solid var(--color-border);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .share-title {
+            font-weight: 600;
+            margin-bottom: var(--space-s);
+            color: var(--color-text-primary);
+            font-size: var(--step-0);
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: var(--space-s);
+        }
+
+        .share-btn {
+            flex: 1;
+            padding: var(--space-s);
+            background: var(--color-bg-secondary);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--color-text-body);
+            font-size: var(--step--1);
+            transition: all 200ms ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2xs);
+            min-height: 44px;
+        }
+
+        .share-btn:hover {
+            background: var(--color-accent);
+            color: var(--color-text-inverse);
+            border-color: var(--color-accent);
+            transform: translateY(-2px);
+        }
+
+        /* ============================================
+           AUTHOR BIO
+        ============================================ */
+        .author-bio {
+            max-width: var(--content-article);
+            margin: var(--space-xl) auto;
+            padding: var(--space-l);
+            background: var(--color-bg-secondary);
+            border-radius: 12px;
+            display: flex;
+            gap: var(--space-m);
+            border: 1px solid var(--color-border);
+            transition: all 300ms ease;
+        }
+
+        .author-bio-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: var(--step-3);
+            flex-shrink: 0;
+        }
+
+        .author-bio-content {
+            flex: 1;
+        }
+
+        .author-bio-name {
+            font-weight: 600;
+            font-size: var(--step-0);
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-2xs);
+        }
+
+        .author-bio-description {
+            color: var(--color-text-muted);
+            font-size: var(--step--1);
+            line-height: 1.6;
+        }
+
+        /* ============================================
+           RELATED POSTS
+        ============================================ */
+        .related-posts {
+            max-width: var(--content-wide);
+            margin: var(--space-2xl) auto;
+            padding: 0 var(--space-l);
+        }
+
+        .related-title {
+            font-family: 'Crimson Pro', Georgia, serif;
+            font-size: var(--step-3);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: var(--space-l);
+            color: var(--color-text-primary);
+        }
+
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-l);
+        }
+
+        .related-card {
+            text-decoration: none;
+            color: inherit;
+            transition: transform 200ms ease;
+        }
+
+        .related-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .related-card-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            margin-bottom: var(--space-s);
+        }
+
+        .related-card-title {
+            font-weight: 600;
+            font-size: var(--step-0);
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-2xs);
+            font-family: 'Crimson Pro', Georgia, serif;
+        }
+
+        .related-card-excerpt {
+            color: var(--color-text-muted);
+            font-size: var(--step--1);
+            line-height: 1.5;
+        }
+
+        /* ============================================
+           FOOTER
+        ============================================ */
+        .footer {
+            background: var(--color-bg-secondary);
+            border-top: 1px solid var(--color-border);
+            padding: var(--space-xl) var(--space-l);
+            margin-top: var(--space-2xl);
+            transition: all 300ms ease;
+        }
+
+        .footer-content {
+            max-width: var(--content-wide);
+            margin: 0 auto;
+            text-align: center;
+            color: var(--color-text-muted);
+            font-size: var(--step--1);
+        }
+
+        .footer a {
+            color: var(--color-text-muted);
+            text-decoration: none;
+            transition: color 200ms ease;
+        }
+
+        .footer a:hover {
+            color: var(--color-text-primary);
+        }
+
+        /* ============================================
+           RESPONSIVE
+        ============================================ */
+        @media (max-width: 768px) {
+            .article-title {
+                font-size: var(--step-4);
+            }
+
+            .article-subtitle {
+                font-size: var(--step-0);
+            }
+
+            .article-content p {
+                font-size: var(--step--1);
+            }
+
+            .author-bio {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .share-buttons {
+                flex-direction: column;
+            }
+
+            .nav a:not(.cta-btn):not(.theme-toggle) {
+                display: none;
+            }
+        }
+
+        /* ============================================
+           ACCESSIBILITY
+        ============================================ */
+        *:focus-visible {
+            outline: 2px solid var(--color-accent);
+            outline-offset: 2px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Progress bar -->
+    <div class="progress-bar" role="progressbar" aria-label="Reading progress">
+        <div class="progress-fill"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">DevBlog</div>
+            <nav class="nav" aria-label="Main navigation">
+                <a href="#">Home</a>
+                <a href="#">Archive</a>
+                <a href="#">About</a>
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                    <span class="theme-icon">🌙</span>
+                </button>
+                <a href="#" class="cta-btn">Subscribe</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Article -->
+    <article>
+        <div class="article-hero">
+            <div class="article-meta">
+                <div class="author-avatar" aria-hidden="true">JD</div>
+                <div class="author-info">
+                    <div class="author-name">John Doe</div>
+                    <time class="post-date" datetime="2025-01-15">January 15, 2025 · 8 min read</time>
+                </div>
+            </div>
+
+            <h1 class="article-title">My Journey with React Hooks: From Confusion to Clarity</h1>
+            <p class="article-subtitle">
+                How I learned to stop worrying about class components and embrace the functional future of React.
+            </p>
+        </div>
+
+        <div class="article-cover">
+            <svg width="1200" height="500" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <rect width="1200" height="500" fill="url(#grad1)"/>
+                <text x="50%" y="50%" text-anchor="middle" fill="white" font-size="48" font-family="Crimson Pro, serif" font-weight="700">React Hooks Journey</text>
+            </svg>
+        </div>
+
+        <!-- Article Content -->
+        <div class="article-content">
+            <p>
+                When React Hooks were first announced at React Conf 2018, I was skeptical. After years of writing
+                class components with lifecycle methods I knew by heart, the idea of managing state and side effects
+                with simple functions seemed almost too good to be true. But as I dove deeper into this new paradigm,
+                I discovered a more elegant way to write React applications.
+            </p>
+
+            <p>
+                The learning curve wasn't exactly smooth. I made every mistake in the book: forgetting dependency
+                arrays, creating infinite loops, and wrestling with stale closures. But each mistake taught me
+                something valuable about how React works under the hood.
+            </p>
+
+            <h2>The Breakthrough Moment</h2>
+
+            <p>
+                My understanding of hooks crystallized when I stopped trying to map them directly to class component
+                lifecycle methods. Hooks aren't just a different syntax for the same concepts—they represent a
+                fundamentally different mental model for building components.
+            </p>
+
+            <blockquote>
+                "With Hooks, you don't think in terms of mounting and updating. You think in terms of
+                synchronizing with external systems."
+            </blockquote>
+
+            <p>
+                This shift in perspective changed everything. Instead of asking "which lifecycle method do I use?",
+                I started asking "what does this component need to synchronize with?" The answer to that question
+                naturally leads you to the right hook.
+            </p>
+
+            <h3>useState: More Than Just State</h3>
+
+            <p>
+                Let's start with the most fundamental hook. At first glance, <code>useState</code> seems simple:
+                it gives you a value and a way to update it. But the real power comes from understanding that
+                each call to <code>useState</code> is independent and can manage its own piece of state:
+            </p>
+
+            <pre><code>const [count, setCount] = useState(0);
+const [name, setName] = useState('');
+const [isVisible, setIsVisible] = useState(true);
+
+// Each piece of state is independent
+// Updates are batched for performance
+// Re-renders happen efficiently</code></pre>
+
+            <p>
+                Unlike class components where all state lives in a single object, hooks let you split state into
+                logical pieces. This makes your code more modular and easier to refactor.
+            </p>
+
+            <div class="pullquote">
+                The best code is not the cleverest code—it's the code that's easiest to understand six months from now.
+            </div>
+
+            <h2>useEffect: The Swiss Army Knife</h2>
+
+            <p>
+                If <code>useState</code> is the heart of hooks, <code>useEffect</code> is the nervous system.
+                It handles all the side effects your component needs: data fetching, subscriptions, manual DOM
+                manipulation, and more.
+            </p>
+
+            <p>
+                The key insight is that <code>useEffect</code> runs after every render by default, but you can
+                control when it runs with the dependency array. This is where many developers (including past me)
+                get tripped up.
+            </p>
+
+            <h3>Three Rules That Changed My Understanding</h3>
+
+            <p>After countless hours of debugging, I distilled my learnings into three rules:</p>
+
+            <ul>
+                <li><strong>Always declare dependencies honestly</strong> – Don't lie to React about what your effect needs</li>
+                <li><strong>Think in synchronization</strong> – Your effect should sync with external state, not cause it</li>
+                <li><strong>Cleanup is crucial</strong> – Always cleanup subscriptions, timers, and event listeners</li>
+            </ul>
+
+            <p>
+                These rules might seem obvious now, but they represent hundreds of hours of debugging and reading
+                documentation. If you internalize them early, you'll save yourself countless headaches.
+            </p>
+
+            <h2>Lessons Learned</h2>
+
+            <p>
+                Looking back on this journey, I realize that learning hooks wasn't just about learning a new API.
+                It was about learning to think differently about how components work. The confusion you feel now
+                will transform into clarity with practice and persistence.
+            </p>
+        </div>
+
+        <!-- Tags -->
+        <div class="article-tags">
+            <a href="#" class="tag">React</a>
+            <a href="#" class="tag">JavaScript</a>
+            <a href="#" class="tag">Hooks</a>
+            <a href="#" class="tag">Frontend Development</a>
+        </div>
+
+        <!-- Share -->
+        <div class="article-share">
+            <div class="share-title">Share this article</div>
+            <div class="share-buttons">
+                <a href="#" class="share-btn">
+                    <span>🐦</span> Twitter
+                </a>
+                <a href="#" class="share-btn">
+                    <span>💼</span> LinkedIn
+                </a>
+                <a href="#" class="share-btn">
+                    <span>📘</span> Facebook
+                </a>
+                <a href="#" class="share-btn">
+                    <span>🔗</span> Copy
+                </a>
+            </div>
+        </div>
+
+        <!-- Author Bio -->
+        <div class="author-bio">
+            <div class="author-bio-avatar" aria-hidden="true">JD</div>
+            <div class="author-bio-content">
+                <div class="author-bio-name">John Doe</div>
+                <div class="author-bio-description">
+                    Full-stack developer passionate about React, TypeScript, and building great user experiences.
+                    I write about web development, share lessons learned, and occasionally complain about CSS.
+                    Follow me for more articles on modern JavaScript and frontend architecture.
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <!-- Related Posts -->
+    <section class="related-posts">
+        <h2 class="related-title">Related Articles</h2>
+        <div class="related-grid">
+            <a href="#" class="related-card">
+                <div class="related-card-image"></div>
+                <h3 class="related-card-title">Understanding useEffect Dependencies</h3>
+                <p class="related-card-excerpt">
+                    A deep dive into dependency arrays and how to avoid common pitfalls when using useEffect.
+                </p>
+            </a>
+            <a href="#" class="related-card">
+                <div class="related-card-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"></div>
+                <h3 class="related-card-title">Building Custom Hooks Like a Pro</h3>
+                <p class="related-card-excerpt">
+                    Learn patterns and best practices for creating reusable custom hooks in your React applications.
+                </p>
+            </a>
+            <a href="#" class="related-card">
+                <div class="related-card-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);"></div>
+                <h3 class="related-card-title">From Class to Hooks: A Migration Guide</h3>
+                <p class="related-card-excerpt">
+                    Step-by-step guide to refactoring your class components to functional components with hooks.
+                </p>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>© 2025 DevBlog. All rights reserved.</p>
+            <p style="margin-top: var(--space-2xs);">
+                <a href="#">Privacy</a> ·
+                <a href="#">Terms</a> ·
+                <a href="#">RSS</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Theme toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        const themeIcon = document.querySelector('.theme-icon');
+
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', currentTheme);
+        themeIcon.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+
+        themeToggle.addEventListener('click', () => {
+            const newTheme = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            themeIcon.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+        });
+
+        // Scroll progress
+        window.addEventListener('scroll', () => {
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight - windowHeight;
+            const scrolled = window.scrollY;
+            const progress = (scrolled / documentHeight) * 100;
+            document.querySelector('.progress-fill').style.width = progress + '%';
+        });
+    </script>
+</body>
+</html>

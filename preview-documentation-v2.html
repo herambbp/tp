@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduction to Python - Documentation</title>
+
+    <!-- Variable Font: Inter (optimized for screens) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..900&family=Lora:ital,wght@0,400..700;1,400..700&family=Crimson+Pro:wght@400..900&family=JetBrains+Mono:wght@400..700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================
+           FLUID TYPE SCALE (2025 Best Practice)
+           Responsive typography using clamp()
+        ============================================ */
+        :root {
+            /* Fluid type scale: min 16px @ 320px viewport, max 18px @ 1200px */
+            --step--2: clamp(0.69rem, calc(0.66rem + 0.18vw), 0.80rem);
+            --step--1: clamp(0.83rem, calc(0.78rem + 0.29vw), 1.00rem);
+            --step-0: clamp(1.00rem, calc(0.91rem + 0.43vw), 1.25rem);
+            --step-1: clamp(1.20rem, calc(1.07rem + 0.63vw), 1.56rem);
+            --step-2: clamp(1.44rem, calc(1.26rem + 0.89vw), 1.95rem);
+            --step-3: clamp(1.73rem, calc(1.48rem + 1.24vw), 2.44rem);
+            --step-4: clamp(2.07rem, calc(1.73rem + 1.70vw), 3.05rem);
+            --step-5: clamp(2.49rem, calc(2.03rem + 2.31vw), 3.82rem);
+
+            /* Spacing scale (8px grid) */
+            --space-3xs: clamp(0.25rem, calc(0.23rem + 0.11vw), 0.31rem);
+            --space-2xs: clamp(0.50rem, calc(0.46rem + 0.21vw), 0.63rem);
+            --space-xs: clamp(0.75rem, calc(0.68rem + 0.32vw), 0.94rem);
+            --space-s: clamp(1.00rem, calc(0.91rem + 0.43vw), 1.25rem);
+            --space-m: clamp(1.50rem, calc(1.37rem + 0.65vw), 1.88rem);
+            --space-l: clamp(2.00rem, calc(1.83rem + 0.87vw), 2.50rem);
+            --space-xl: clamp(3.00rem, calc(2.74rem + 1.30vw), 3.75rem);
+            --space-2xl: clamp(4.00rem, calc(3.65rem + 1.74vw), 5.00rem);
+            --space-3xl: clamp(6.00rem, calc(5.48rem + 2.61vw), 7.50rem);
+
+            /* Content widths */
+            --content-xs: 20ch;
+            --content-s: 45ch;
+            --content-m: 60ch;
+            --content-l: 75ch;
+        }
+
+        /* ============================================
+           COLOR SYSTEM - Light & Dark Modes
+           Following 2025 accessibility guidelines
+        ============================================ */
+        [data-theme="light"] {
+            /* Backgrounds */
+            --color-bg-primary: #ffffff;
+            --color-bg-secondary: #f8fafc;
+            --color-bg-elevated: #ffffff;
+            --color-bg-overlay: rgba(255, 255, 255, 0.95);
+
+            /* Text - High contrast for accessibility */
+            --color-text-primary: #0f172a;
+            --color-text-body: #1e293b;
+            --color-text-muted: #64748b;
+            --color-text-inverse: #f8fafc;
+
+            /* Accents */
+            --color-accent-primary: #2563eb;
+            --color-accent-hover: #1d4ed8;
+            --color-accent-light: #dbeafe;
+
+            /* Semantic colors */
+            --color-info: #3b82f6;
+            --color-info-bg: #eff6ff;
+            --color-info-border: #93c5fd;
+
+            --color-success: #10b981;
+            --color-success-bg: #d1fae5;
+            --color-success-border: #6ee7b7;
+
+            --color-warning: #f59e0b;
+            --color-warning-bg: #fef3c7;
+            --color-warning-border: #fcd34d;
+
+            --color-danger: #ef4444;
+            --color-danger-bg: #fee2e2;
+            --color-danger-border: #fca5a5;
+
+            /* Borders & dividers */
+            --color-border: #e2e8f0;
+            --color-border-strong: #cbd5e1;
+
+            /* Code blocks */
+            --color-code-bg: #f8fafc;
+            --color-code-border: #e2e8f0;
+            --color-code-text: #1e293b;
+
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+        }
+
+        [data-theme="dark"] {
+            /* Backgrounds - Avoid pure black */
+            --color-bg-primary: #0f172a;
+            --color-bg-secondary: #1e293b;
+            --color-bg-elevated: #1e293b;
+            --color-bg-overlay: rgba(15, 23, 42, 0.95);
+
+            /* Text - Avoid pure white, use softer tones */
+            --color-text-primary: #f1f5f9;
+            --color-text-body: #e2e8f0;
+            --color-text-muted: #94a3b8;
+            --color-text-inverse: #0f172a;
+
+            /* Accents - Slightly brighter for dark mode */
+            --color-accent-primary: #60a5fa;
+            --color-accent-hover: #93c5fd;
+            --color-accent-light: #1e3a8a;
+
+            /* Semantic colors - Desaturated for dark mode */
+            --color-info: #60a5fa;
+            --color-info-bg: #1e3a8a;
+            --color-info-border: #3b82f6;
+
+            --color-success: #34d399;
+            --color-success-bg: #064e3b;
+            --color-success-border: #10b981;
+
+            --color-warning: #fbbf24;
+            --color-warning-bg: #451a03;
+            --color-warning-border: #f59e0b;
+
+            --color-danger: #f87171;
+            --color-danger-bg: #450a0a;
+            --color-danger-border: #dc2626;
+
+            /* Borders & dividers */
+            --color-border: #334155;
+            --color-border-strong: #475569;
+
+            /* Code blocks */
+            --color-code-bg: #1e293b;
+            --color-code-border: #334155;
+            --color-code-text: #e2e8f0;
+
+            /* Shadows - Lighter for dark mode */
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5);
+        }
+
+        /* ============================================
+           SMOOTH THEME TRANSITION
+        ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            transition: background-color 300ms ease, color 300ms ease;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--color-bg-primary);
+            color: var(--color-text-body);
+            line-height: 1.6;
+            transition: background-color 300ms ease, color 300ms ease;
+            font-feature-settings: 'liga' 1, 'calt' 1; /* Enable ligatures */
+        }
+
+        /* ============================================
+           HEADER
+        ============================================ */
+        .header {
+            background: var(--color-bg-overlay);
+            border-bottom: 1px solid var(--color-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: all 300ms ease;
+        }
+
+        .header-content {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: var(--space-s) var(--space-l);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: var(--step-1);
+            font-weight: 700;
+            color: var(--color-text-primary);
+            display: flex;
+            align-items: center;
+            gap: var(--space-2xs);
+            letter-spacing: -0.02em;
+        }
+
+        .nav {
+            display: flex;
+            gap: var(--space-m);
+            align-items: center;
+        }
+
+        .nav a {
+            color: var(--color-text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: var(--step--1);
+            transition: color 200ms ease;
+        }
+
+        .nav a:hover {
+            color: var(--color-text-primary);
+        }
+
+        /* Theme toggle button */
+        .theme-toggle {
+            background: var(--color-bg-secondary);
+            border: 1px solid var(--color-border);
+            padding: var(--space-2xs) var(--space-xs);
+            border-radius: 24px;
+            cursor: pointer;
+            transition: all 200ms ease;
+            font-size: var(--step-0);
+            display: flex;
+            align-items: center;
+            gap: var(--space-2xs);
+            min-width: 44px; /* Touch target */
+            min-height: 44px;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            background: var(--color-accent-primary);
+            color: var(--color-text-inverse);
+            border-color: var(--color-accent-primary);
+            transform: translateY(-1px);
+        }
+
+        .theme-toggle:active {
+            transform: translateY(0);
+        }
+
+        /* ============================================
+           LAYOUT
+        ============================================ */
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 280px 1fr 240px;
+            gap: var(--space-l);
+            padding: var(--space-l);
+        }
+
+        /* ============================================
+           SIDEBAR
+        ============================================ */
+        .sidebar {
+            position: sticky;
+            top: calc(var(--space-2xl) + var(--space-l));
+            height: fit-content;
+            background: var(--color-bg-elevated);
+            border-radius: 12px;
+            padding: var(--space-m);
+            border: 1px solid var(--color-border);
+            transition: all 300ms ease;
+        }
+
+        .sidebar-title {
+            font-size: var(--step--2);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-text-muted);
+            margin-bottom: var(--space-s);
+            font-weight: 600;
+        }
+
+        .nav-item {
+            padding: var(--space-xs) var(--space-s);
+            margin: var(--space-3xs) 0;
+            color: var(--color-text-body);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: var(--space-2xs);
+            border-radius: 8px;
+            transition: all 150ms ease;
+            font-size: var(--step--1);
+            min-height: 44px; /* Touch target */
+        }
+
+        .nav-item:hover {
+            background: var(--color-bg-secondary);
+            color: var(--color-text-primary);
+        }
+
+        .nav-item.active {
+            background: var(--color-accent-light);
+            color: var(--color-accent-primary);
+            font-weight: 600;
+        }
+
+        .nav-item.active::before {
+            content: '●';
+            color: var(--color-accent-primary);
+            font-size: 0.5rem;
+        }
+
+        /* ============================================
+           MAIN CONTENT
+        ============================================ */
+        .main-content {
+            background: var(--color-bg-elevated);
+            border-radius: 12px;
+            padding: var(--space-xl);
+            border: 1px solid var(--color-border);
+            min-height: 100vh;
+            transition: all 300ms ease;
+        }
+
+        .breadcrumb {
+            color: var(--color-text-muted);
+            font-size: var(--step--1);
+            margin-bottom: var(--space-l);
+        }
+
+        .breadcrumb a {
+            color: var(--color-text-muted);
+            text-decoration: none;
+            transition: color 150ms ease;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--color-accent-primary);
+        }
+
+        /* ============================================
+           TYPOGRAPHY
+        ============================================ */
+        .content {
+            max-width: var(--content-l);
+        }
+
+        h1 {
+            font-family: 'Crimson Pro', Georgia, serif;
+            font-size: var(--step-4);
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-s);
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+        }
+
+        .meta {
+            color: var(--color-text-muted);
+            font-size: var(--step--1);
+            margin-bottom: var(--space-l);
+            padding-bottom: var(--space-l);
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            gap: var(--space-s);
+        }
+
+        h2 {
+            font-family: 'Crimson Pro', Georgia, serif;
+            font-size: var(--step-3);
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-top: var(--space-xl);
+            margin-bottom: var(--space-m);
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+
+        h3 {
+            font-family: 'Crimson Pro', Georgia, serif;
+            font-size: var(--step-2);
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-top: var(--space-l);
+            margin-bottom: var(--space-s);
+            line-height: 1.3;
+        }
+
+        p {
+            font-family: 'Lora', Georgia, serif;
+            font-size: var(--step-0);
+            line-height: 1.7;
+            color: var(--color-text-body);
+            margin-bottom: var(--space-m);
+            max-width: var(--content-m);
+        }
+
+        ul, ol {
+            font-family: 'Lora', Georgia, serif;
+            font-size: var(--step-0);
+            line-height: 1.75;
+            margin: var(--space-m) 0;
+            padding-left: var(--space-m);
+        }
+
+        li {
+            margin: var(--space-xs) 0;
+        }
+
+        strong {
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        /* ============================================
+           CALLOUT BOXES
+        ============================================ */
+        .callout {
+            padding: var(--space-m);
+            border-radius: 8px;
+            margin: var(--space-l) 0;
+            border-left: 4px solid;
+            transition: all 300ms ease;
+        }
+
+        .callout-title {
+            font-weight: 600;
+            font-size: var(--step--1);
+            margin-bottom: var(--space-xs);
+            display: flex;
+            align-items: center;
+            gap: var(--space-2xs);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .callout-content {
+            font-family: 'Lora', Georgia, serif;
+            font-size: var(--step--1);
+            line-height: 1.6;
+        }
+
+        .callout.info {
+            background: var(--color-info-bg);
+            border-color: var(--color-info);
+        }
+
+        .callout.warning {
+            background: var(--color-warning-bg);
+            border-color: var(--color-warning);
+        }
+
+        .callout.success {
+            background: var(--color-success-bg);
+            border-color: var(--color-success);
+        }
+
+        .callout.danger {
+            background: var(--color-danger-bg);
+            border-color: var(--color-danger);
+        }
+
+        /* ============================================
+           CODE BLOCKS
+        ============================================ */
+        .code-block {
+            position: relative;
+            margin: var(--space-l) 0;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-s) var(--space-m);
+            background: var(--color-bg-secondary);
+            border-radius: 8px 8px 0 0;
+            border: 1px solid var(--color-code-border);
+            border-bottom: none;
+        }
+
+        .code-lang {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: var(--step--2);
+            color: var(--color-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .copy-btn {
+            background: var(--color-bg-elevated);
+            border: 1px solid var(--color-border);
+            padding: var(--space-2xs) var(--space-s);
+            border-radius: 6px;
+            font-size: var(--step--2);
+            cursor: pointer;
+            transition: all 200ms ease;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            min-height: 36px;
+        }
+
+        .copy-btn:hover {
+            background: var(--color-accent-primary);
+            color: var(--color-text-inverse);
+            border-color: var(--color-accent-primary);
+            transform: translateY(-1px);
+        }
+
+        .copy-btn:active {
+            transform: translateY(0);
+        }
+
+        pre {
+            margin: 0;
+            padding: var(--space-m);
+            background: var(--color-code-bg);
+            border: 1px solid var(--color-code-border);
+            border-radius: 0 0 8px 8px;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: var(--step--1);
+            line-height: 1.7;
+            color: var(--color-code-text);
+        }
+
+        /* Line numbers */
+        .line-numbers {
+            counter-reset: line;
+        }
+
+        .line-numbers .line {
+            counter-increment: line;
+            position: relative;
+            padding-left: 3.5rem;
+        }
+
+        .line-numbers .line::before {
+            content: counter(line);
+            position: absolute;
+            left: 0;
+            width: 2.5rem;
+            text-align: right;
+            color: var(--color-text-muted);
+            user-select: none;
+        }
+
+        /* Syntax highlighting */
+        .keyword { color: #d73a49; }
+        .string { color: #032f62; }
+        .function { color: #6f42c1; }
+        .comment { color: #6a737d; font-style: italic; }
+        .number { color: #005cc5; }
+
+        [data-theme="dark"] .keyword { color: #ff7b72; }
+        [data-theme="dark"] .string { color: #a5d6ff; }
+        [data-theme="dark"] .function { color: #d2a8ff; }
+        [data-theme="dark"] .comment { color: #8b949e; }
+        [data-theme="dark"] .number { color: #79c0ff; }
+
+        /* ============================================
+           TABLE OF CONTENTS
+        ============================================ */
+        .toc {
+            position: sticky;
+            top: calc(var(--space-2xl) + var(--space-l));
+            height: fit-content;
+            background: var(--color-bg-elevated);
+            border-radius: 12px;
+            padding: var(--space-m);
+            border: 1px solid var(--color-border);
+            transition: all 300ms ease;
+        }
+
+        .toc-title {
+            font-size: var(--step--2);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-text-muted);
+            margin-bottom: var(--space-s);
+            font-weight: 600;
+        }
+
+        .toc-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .toc-item {
+            margin: var(--space-xs) 0;
+        }
+
+        .toc-link {
+            color: var(--color-text-muted);
+            text-decoration: none;
+            font-size: var(--step--1);
+            transition: color 150ms ease;
+            display: block;
+            padding: var(--space-3xs) 0;
+        }
+
+        .toc-link:hover {
+            color: var(--color-text-primary);
+        }
+
+        .toc-link.active {
+            color: var(--color-accent-primary);
+            font-weight: 600;
+        }
+
+        .toc-link.active::before {
+            content: '→ ';
+        }
+
+        .toc-item.nested {
+            padding-left: var(--space-s);
+            font-size: var(--step--2);
+        }
+
+        .toc-item.nested::before {
+            content: '• ';
+            color: var(--color-text-muted);
+        }
+
+        /* ============================================
+           PROGRESS BAR
+        ============================================ */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--color-border);
+            z-index: 1000;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--color-accent-primary);
+            width: 35%;
+            transition: width 100ms ease;
+        }
+
+        /* ============================================
+           NAVIGATION
+        ============================================ */
+        .doc-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: var(--space-2xl);
+            padding-top: var(--space-l);
+            border-top: 1px solid var(--color-border);
+            gap: var(--space-s);
+        }
+
+        .doc-nav-btn {
+            flex: 1;
+            padding: var(--space-m);
+            background: var(--color-bg-secondary);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--color-text-body);
+            transition: all 200ms ease;
+            min-height: 80px;
+        }
+
+        .doc-nav-btn:hover {
+            border-color: var(--color-accent-primary);
+            background: var(--color-bg-elevated);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .doc-nav-label {
+            font-size: var(--step--2);
+            color: var(--color-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: var(--space-3xs);
+        }
+
+        .doc-nav-title {
+            font-weight: 600;
+            color: var(--color-text-primary);
+            font-size: var(--step-0);
+        }
+
+        /* ============================================
+           RESPONSIVE
+        ============================================ */
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar, .toc {
+                display: none;
+            }
+
+            .main-content {
+                padding: var(--space-l);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .header-content {
+                padding: var(--space-s);
+            }
+
+            .nav {
+                gap: var(--space-s);
+            }
+
+            .nav a {
+                display: none;
+            }
+
+            .theme-toggle {
+                display: flex;
+            }
+
+            .container {
+                padding: var(--space-s);
+            }
+
+            .main-content {
+                padding: var(--space-m);
+            }
+
+            h1 {
+                font-size: var(--step-3);
+            }
+        }
+
+        /* ============================================
+           ACCESSIBILITY
+        ============================================ */
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        /* Focus styles */
+        *:focus-visible {
+            outline: 2px solid var(--color-accent-primary);
+            outline-offset: 2px;
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Progress bar -->
+    <div class="progress-bar" role="progressbar" aria-label="Reading progress">
+        <div class="progress-fill"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <span aria-label="Documentation">📚</span> DevDocs
+            </div>
+            <nav class="nav" aria-label="Main navigation">
+                <a href="#">Documentation</a>
+                <a href="#">Blog</a>
+                <a href="#">🔍 Search</a>
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                    <span class="theme-icon">🌙</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main container -->
+    <div class="container">
+        <!-- Left sidebar -->
+        <aside class="sidebar" aria-label="Documentation navigation">
+            <div class="sidebar-title">Getting Started</div>
+            <a href="#" class="nav-item">🏠 Home</a>
+            <a href="#" class="nav-item">📖 Courses</a>
+
+            <div class="sidebar-title" style="margin-top: var(--space-l);">Python</div>
+            <a href="#" class="nav-item active">Introduction</a>
+            <a href="#" class="nav-item">Basics</a>
+            <a href="#" class="nav-item">OOP</a>
+
+            <div class="sidebar-title" style="margin-top: var(--space-l);">JavaScript</div>
+            <a href="#" class="nav-item">ES6 Features</a>
+            <a href="#" class="nav-item">Async/Await</a>
+
+            <div class="sidebar-title" style="margin-top: var(--space-l);">React</div>
+            <a href="#" class="nav-item">Hooks</a>
+            <a href="#" class="nav-item">Context API</a>
+        </aside>
+
+        <!-- Main content -->
+        <main class="main-content">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+                <a href="#">Home</a> › <a href="#">Python</a> › Introduction
+            </nav>
+
+            <article class="content">
+                <h1>Introduction to Python</h1>
+                <div class="meta">
+                    <span>8 min read</span>
+                    <span>•</span>
+                    <span>Updated January 15, 2025</span>
+                </div>
+
+                <p>
+                    Python is a high-level, interpreted programming language known for its elegant syntax and readability.
+                    Created by Guido van Rossum and first released in 1991, it has become one of the most popular
+                    programming languages in the world, powering everything from web applications to data science and machine learning.
+                </p>
+
+                <p>
+                    The language's design philosophy emphasizes code readability with the use of significant indentation.
+                    Its language constructs and object-oriented approach aim to help programmers write clear, logical code
+                    for small and large-scale projects.
+                </p>
+
+                <div class="callout info">
+                    <div class="callout-title">💡 TIP</div>
+                    <div class="callout-content">
+                        Python's philosophy is beautifully captured in "The Zen of Python". Try running
+                        <code>import this</code> in your Python interpreter to see the full list of guiding principles!
+                    </div>
+                </div>
+
+                <h2>Why Python?</h2>
+
+                <p>
+                    Python emphasizes code readability and allows developers to express concepts in fewer lines of code
+                    than would be possible in languages such as C++ or Java. The language provides constructs intended to
+                    enable writing clear programs on both small and large scales.
+                </p>
+
+                <p>Key features that make Python stand out:</p>
+
+                <ul>
+                    <li><strong>Dynamic typing</strong> – No need to declare variable types explicitly</li>
+                    <li><strong>Automatic memory management</strong> – Built-in garbage collector handles memory allocation</li>
+                    <li><strong>Rich standard library</strong> – "Batteries included" philosophy means less external dependencies</li>
+                    <li><strong>Cross-platform</strong> – Runs on Windows, macOS, Linux, and more</li>
+                    <li><strong>Multiple paradigms</strong> – Supports procedural, object-oriented, and functional programming</li>
+                </ul>
+
+                <h2>Installing Python</h2>
+
+                <p>
+                    Getting started with Python is straightforward. You can download the official distribution from
+                    python.org, or use a package manager for your operating system:
+                </p>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">bash</span>
+                        <button class="copy-btn">📋 Copy</button>
+                    </div>
+                    <pre><code><span class="comment"># macOS (using Homebrew)</span>
+brew install python3
+
+<span class="comment"># Ubuntu/Debian</span>
+sudo apt install python3
+
+<span class="comment"># Windows (using Chocolatey)</span>
+choco install python</code></pre>
+                </div>
+
+                <p>
+                    After installation, verify it's working by checking the version:
+                </p>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">bash</span>
+                        <button class="copy-btn">📋 Copy</button>
+                    </div>
+                    <pre><code>python3 --version</code></pre>
+                </div>
+
+                <h3>Your First Python Program</h3>
+
+                <p>
+                    Let's write the traditional "Hello, World!" program in Python. Create a file named
+                    <code>hello.py</code> and add the following code:
+                </p>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">python</span>
+                        <button class="copy-btn">📋 Copy</button>
+                    </div>
+                    <pre class="line-numbers"><code><div class="line"><span class="keyword">def</span> <span class="function">greet</span>(name):</div><div class="line">    <span class="string">"""Greet someone by name."""</span></div><div class="line">    <span class="keyword">return</span> <span class="string">f"Hello, {name}!"</span></div><div class="line"></div><div class="line"><span class="comment"># Call the function</span></div><div class="line">message = greet(<span class="string">"World"</span>)</div><div class="line"><span class="function">print</span>(message)  <span class="comment"># Output: Hello, World!</span></div></code></pre>
+                </div>
+
+                <div class="callout success">
+                    <div class="callout-title">✅ BEST PRACTICE</div>
+                    <div class="callout-content">
+                        Always use virtual environments for your Python projects to avoid dependency conflicts.
+                        Use <code>python3 -m venv venv</code> to create one, then activate it with
+                        <code>source venv/bin/activate</code> (Unix) or <code>venv\Scripts\activate</code> (Windows).
+                    </div>
+                </div>
+
+                <h2>What's Next?</h2>
+
+                <p>
+                    Now that you have Python installed and understand the basics, you're ready to dive deeper.
+                    In the next section, we'll explore Python's fundamental data types, variables, and operators.
+                </p>
+
+                <!-- Navigation -->
+                <nav class="doc-nav" aria-label="Page navigation">
+                    <a href="#" class="doc-nav-btn">
+                        <div class="doc-nav-label">← Previous</div>
+                        <div class="doc-nav-title">Getting Started</div>
+                    </a>
+                    <a href="#" class="doc-nav-btn" style="text-align: right;">
+                        <div class="doc-nav-label">Next →</div>
+                        <div class="doc-nav-title">Python Basics</div>
+                    </a>
+                </nav>
+            </article>
+        </main>
+
+        <!-- Right TOC -->
+        <aside class="toc" aria-label="Table of contents">
+            <div class="toc-title">On This Page</div>
+            <ul class="toc-list">
+                <li class="toc-item"><a href="#" class="toc-link active">Overview</a></li>
+                <li class="toc-item"><a href="#" class="toc-link">Why Python?</a></li>
+                <li class="toc-item nested"><a href="#" class="toc-link">Key Features</a></li>
+                <li class="toc-item"><a href="#" class="toc-link">Installing Python</a></li>
+                <li class="toc-item nested"><a href="#" class="toc-link">First Program</a></li>
+                <li class="toc-item"><a href="#" class="toc-link">What's Next?</a></li>
+            </ul>
+        </aside>
+    </div>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        const themeIcon = document.querySelector('.theme-icon');
+
+        // Check for saved theme preference or default to light mode
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', currentTheme);
+        themeIcon.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+
+        themeToggle.addEventListener('click', () => {
+            const newTheme = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            themeIcon.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+        });
+
+        // Copy button functionality
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const codeBlock = btn.closest('.code-block').querySelector('code');
+                const text = codeBlock.innerText;
+                navigator.clipboard.writeText(text);
+
+                btn.textContent = '✅ Copied!';
+                setTimeout(() => {
+                    btn.textContent = '📋 Copy';
+                }, 2000);
+            });
+        });
+
+        // Scroll progress
+        window.addEventListener('scroll', () => {
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight - windowHeight;
+            const scrolled = window.scrollY;
+            const progress = (scrolled / documentHeight) * 100;
+
+            document.querySelector('.progress-fill').style.width = progress + '%';
+        });
+
+        // Smooth scroll for TOC links
+        document.querySelectorAll('.toc-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                // Smooth scroll implementation would go here
+            });
+        });
+    </script>
+</body>
+</html>
